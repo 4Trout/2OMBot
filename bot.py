@@ -7,6 +7,7 @@ from discord import Color
 from discord.ext import commands
 from discord.ext.commands import Bot
 from discord.ext.commands import CommandNotFound
+from discord.utils import get
 
 # Coingecko setup
 from pycoingecko import CoinGeckoAPI
@@ -47,6 +48,8 @@ async def verify(ctx, user: discord.Member, wallet, role:discord.Role=None):
             await ctx.send(embed=em)
         else:
             await user.add_roles(role)
+            role_get = get(user.guild.roles, name="Pending Verification")
+            await user.remove_roles(role_get)
             em = discord.Embed(title=f"Verification Success!", description=f"Wallet has been verified and role has been automatically granted!", color=Color.green())
             await ctx.send(embed=em)
 
@@ -60,6 +63,8 @@ async def add(ctx, user: discord.Member, wallet, role: discord.Role=None):
         await ctx.send(embed=em)
     else:
         await user.add_roles(role)
+        role_get = get(user.guild.roles, name="Pending Verification")
+        await user.remove_roles(role_get)
         em = discord.Embed(title=f"Verification Success!", description=f"Wallet has been verified and role has been automatically granted!", color=Color.green())
         await ctx.send(embed=em)
 
